@@ -8,5 +8,6 @@ if __name__ == '__main__':
 
     url = 'https://www.generalmills.com/food-we-make/brands'
     ws = WebScraper(url)
-    ws.extract_source()
+    print(ws.extract_resources())
+
 
