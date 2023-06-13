@@ -6,10 +6,11 @@ WORKDIR /usr/src/app
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY ./neo4jclient /usr/src/app
-COPY main.py /usr/src/app
+COPY . /usr/src/app
 
-ENV PYTHONPATH=/usr/src/app/pyarrow:$PYTHONPATH
+ENV PYTHONPATH=/usr/src/app/python:$PYTHONPATH
+ENV NEO4J_CENTRAL_USER=$neo4j_user
+ENV NEO4J_CENTRAL_PASSWORD=$neo4j_password
+ENV NEO4J_CENTRAL_URI=$neo4j_url
 
-
-CMD ["python","./client/main.py"]
+CMD ["python", "./main.py"]
