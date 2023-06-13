@@ -21,13 +21,11 @@ public class BrandController {
 
     }
 
-
     @QueryMapping
     public Collection<Brand> getAllBrands(@Argument String brandName){
         return brandService.getAllBrands(brandName);
 
     }
-
 
 
 }
