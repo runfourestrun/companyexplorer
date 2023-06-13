@@ -1,0 +1,8 @@
+type Brand {
+    brandName: String!
+}
+
+
+type Query {
+    getAllBrands(brandName: String!): [Brand]
+}
