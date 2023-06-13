@@ -2,33 +2,55 @@ package io.fournier.springgraphqlneo4j.service;
 
 
 import io.fournier.springgraphqlneo4j.dto.Brand;
+import org.neo4j.driver.Record;
+import org.neo4j.driver.types.Type;
+import org.neo4j.driver.types.TypeSystem;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.neo4j.core.Neo4jClient;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
+import java.util.function.BiFunction;
 
 @Service
 public class BrandService {
 
-    Neo4jClient neo4jClient;
-    String database;
+    private Neo4jClient neo4jClient;
 
-    public BrandService(Neo4jClient neo4jClient){
+    private String database;
+
+
+    private static final String CYPHER_QUERY_GET_ALL_BRANDS = "MATCH (b:Brand {name: $name) RETURN b {.name}";
+
+
+    private BiFunction<TypeSystem,Record,Brand> toBrandDTO = this::toBrandDTO;
+
+
+
+    public BrandService(Neo4jClient neo4jClient,@Value("${spring.datasource.database}") String database){
         this.neo4jClient = neo4jClient;
-        this.database = "companyAnalyzer";
+        this.database = database;
+    }
+
+    public Collection<Brand> getAllBrands(String brandName) {
+        return this.neo4jClient.query(CYPHER_QUERY_GET_ALL_BRANDS)
+                .in(database)
+                .fetchAs(Brand.class)
+                .mappedBy(toBrandDTO)
+                .all();
 
     }
 
-    public List<Brand> getAllBrands(String brandName){
 
-        return List.of();
+    public Brand toBrandDTO(TypeSystem typeSystem, Record record) {
+        var result_map = record.get(0).asMap();
+        var name = (String) result_map.get("name");
 
-
-
+        Brand brandDTO = new Brand(name);
+        return brandDTO;
     }
-
-
-
 
 
 
