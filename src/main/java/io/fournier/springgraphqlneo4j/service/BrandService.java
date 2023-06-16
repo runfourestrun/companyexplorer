@@ -25,6 +25,7 @@ public class BrandService {
         this.database = database;
     }
 
+
     public Collection<Brand> getAllBrands(String brandName) {
         String cypherString = String.format("MATCH (b:Brand {name: '%s'}) - [:HAS_BRAND] -> (b1:Brand) RETURN b1 {.name}", brandName);
         return this.neo4jClient.query(cypherString)
