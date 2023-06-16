@@ -1,3 +1,3 @@
-from openaiwrapper import *
+from .openaiwrapper import *
 
 

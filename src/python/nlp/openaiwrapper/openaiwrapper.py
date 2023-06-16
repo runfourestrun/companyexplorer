@@ -5,8 +5,6 @@ import tiktoken
 from typing import List, Dict
 
 
-
-
 class OpenaiWrapper:
     '''
     Wrapper class for interacting with OpenAI
@@ -20,7 +18,8 @@ class OpenaiWrapper:
         self.api_key: str = os.getenv("OPEN_AI_API_KEY")
         self.model: str = model
         self.temperature: float = temperature
-        self.encoding = tiktoken.get_encoding(self.model)
+        self.tiktoken_encoding = self._set_tiktoken_encoding()
+        self.encoding: Dict[str, int] = self._set_encoding()
         self.messages: List[Dict[str, str]] = []
 
     def add_system_message(self, content: str) -> None:
@@ -41,16 +40,36 @@ class OpenaiWrapper:
         encoding_lengths = [len(message) for message in encoded_conversation]
         return sum(encoding_lengths)
 
-
-    def chat(self,message: str ):
+    def chat(self, message: str):
         '''
 
         :param message:
         :return:
         '''
-        response =  openai.Completion.create(
-            model = self.model,
+        response = openai.Completion.create(
+            model=self.model,
             prompt=message
         )
         return response['choices'][0]['message']['content']
 
+    def _set_tiktoken_encoding(self) -> str:
+        '''
+        Map the model type to the corresponding encoding.
+
+        :param model_type: The model type to map
+        :return: corresponding encoding
+        '''
+        models = {
+            "cl100k_base": "gpt-4, gpt-3.5-turbo, text-embedding-ada-002",
+            "p50k_base": "Codex models, text-davinci-002, text-davinci-003",
+            "r50k_base": "GPT-3 models like davinci"
+        }
+
+        for _model, encodings in models.items():
+            if self.model in encodings:
+                return _model
+            else:
+                return "unknown"
+
+    def _set_encoding(self) -> Dict[str, int]:
+        self.encoding = tiktoken.get_encoding(self.tiktoken_encoding)
