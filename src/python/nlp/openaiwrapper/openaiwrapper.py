@@ -42,10 +42,15 @@ class OpenaiWrapper:
         return sum(encoding_lengths)
 
 
-    def create_response(self,message):
+    def chat(self,message: str ):
+        '''
+
+        :param message:
+        :return:
+        '''
         response =  openai.Completion.create(
             model = self.model,
             prompt=message
         )
-        return response
+        return response['choices'][0]['message']['content']
 
