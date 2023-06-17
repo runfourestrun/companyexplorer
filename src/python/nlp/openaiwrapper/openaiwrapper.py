@@ -3,6 +3,7 @@ import os
 import openai
 import tiktoken
 from typing import List, Dict
+from .messagecontainer import MessageContainer
 
 
 class OpenaiWrapper:
@@ -40,17 +41,21 @@ class OpenaiWrapper:
         encoding_lengths = [len(message) for message in encoded_conversation]
         return sum(encoding_lengths)
 
-    def chat(self, message: str):
+
+    def chat(self, message:MessageContainer) -> str:
         '''
 
         :param message:
         :return:
         '''
-        response = openai.Completion.create(
+        openai.api_key = self.api_key
+        response = openai.ChatCompletion.create(
             model=self.model,
-            prompt=message
+            messages=message
         )
-        return response['choices'][0]['message']['content']
+        response = response['choices'][0]['message']['content']
+        print(response)
+        return response
 
     def _set_tiktoken_encoding(self) -> str:
         '''
