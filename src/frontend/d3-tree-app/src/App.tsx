@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query'
+import { useQuery,QueryClient,QueryClientProvider } from 'react-query'
 import { gql } from '@apollo/client';
 import client from './client'
 
@@ -16,6 +16,10 @@ const GET_ALL_BRANDS = gql`
         }
     }
 `;
+
+
+const queryClient = new QueryClient();
+
 
 function App() {
 
@@ -64,5 +68,14 @@ function App() {
     );
 }
 
+function Root() {
+    return (
+        <QueryClientProvider client={queryClient}>
+            <App />
+        </QueryClientProvider>
+    );
+}
 
-export default App;
+
+
+export default Root;
