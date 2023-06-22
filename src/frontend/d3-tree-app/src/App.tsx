@@ -4,15 +4,14 @@ import { gql } from '@apollo/client';
 import client from './client'
 
 
-
 interface Brand {
-    name: string;
+    brandName: string;
 }
 
 const GET_ALL_BRANDS = gql`
-    query GetAllBrands($brandName: String!) {
-        getAllBrands(brandName: $brandName) {
-            name
+    query GetAllBrands{
+        getAllBrands {
+            brandName
         }
     }
 `;
@@ -27,7 +26,7 @@ function App() {
     //Hook to manage state for these two variables
     const [inputValue, setInputValue] = useState('');
 
-    //
+    //I think this is an event handler? It changes the state of event.target.value clearly though.
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value);
     };
@@ -43,7 +42,7 @@ function App() {
     });
 
 
-    if (isLoading) {
+    if (isLoading || data === undefined) {
         return <div>Loading...</div>;
     }
 

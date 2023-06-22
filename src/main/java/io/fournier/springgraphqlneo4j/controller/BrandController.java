@@ -6,9 +6,9 @@ import io.fournier.springgraphqlneo4j.service.BrandService;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Collection;
-import java.util.List;
 
 @Controller
 public class BrandController {
@@ -21,10 +21,17 @@ public class BrandController {
 
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @QueryMapping
-    public Collection<Brand> getAllBrands(@Argument String brandName){
-        return brandService.getAllBrands(brandName);
+    public Collection<Brand> getSubBrands(@Argument String brandName){
+        return brandService.getSubBrands(brandName);
 
+    }
+
+    @CrossOrigin(origins = "http://localhost:3000")
+    @QueryMapping
+    public Collection<Brand> getAllBrands(){
+        return brandService.getAllBrands();
     }
 
 

@@ -4,5 +4,6 @@ type Brand {
 
 
 type Query {
-    getAllBrands(brandName: String!): [Brand]
+    getSubBrands(brandName: String!): [Brand],
+    getAllBrands: [Brand]
 }

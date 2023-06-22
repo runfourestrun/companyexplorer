@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.function.BiFunction;
 
+
 @Service
 public class BrandService {
 
@@ -26,7 +27,7 @@ public class BrandService {
     }
 
 
-    public Collection<Brand> getAllBrands(String brandName) {
+    public Collection<Brand> getSubBrands(String brandName) {
         String cypherString = String.format("MATCH (b:Brand {name: '%s'}) - [:HAS_BRAND] -> (b1:Brand) RETURN b1 {.name}", brandName);
         return this.neo4jClient.query(cypherString)
                 .in(database)
@@ -34,6 +35,16 @@ public class BrandService {
                 .mappedBy(toBrandDTO)
                 .all();
 
+    }
+
+
+    public Collection<Brand> getAllBrands(){
+        String cypherString = String.format("MATCH (b:Brand) RETURN b {.name}");
+        return this.neo4jClient.query(cypherString)
+                .in(database)
+                .fetchAs(Brand.class)
+                .mappedBy(toBrandDTO)
+                .all();
     }
 
 
