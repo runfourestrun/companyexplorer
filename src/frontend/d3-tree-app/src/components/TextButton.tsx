@@ -1,17 +1,16 @@
 import {SetStateAction, useState} from "react";
 
-const TextButton: React.FC<{ onBrandInputChange: (input: string) => void }> = ({ onBrandInputChange }) => {
+const TextButton =  () => {
 
-    const [brandInput, setBrandInput] = useState('');
+    const [value, setValue] = useState('');
 
-    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const input = event.target.value;
-        setBrandInput(input);
-        onBrandInputChange(input)
+        setValue(input);
     };
 
     const handleButtonClick = () => {
-        console.log(brandInput)
+        console.log(value)
     }
 
     return (
@@ -19,8 +18,7 @@ const TextButton: React.FC<{ onBrandInputChange: (input: string) => void }> = ({
             <input
                 placeholder="Input the Brand here"
                 type="text"
-                value={brandInput}
-                onChange={handleInputChange}
+                onChange={handleChange}
             />
             <button onClick={handleButtonClick}>Submit</button>
         </div>

@@ -6,6 +6,10 @@ interface Brand {
     brandName: string;
 }
 
+interface SubBrandListProps {
+    stateValue: string;
+}
+
 const GET_SUB_BRANDS = gql`
     query GetSubBrands($brandName: String!) {
         getSubBrands(brandName: $brandName) {
@@ -15,28 +19,29 @@ const GET_SUB_BRANDS = gql`
 `;
 
 
-const GetSubBrands: React.FC<{brandInput:String}>  = ({ brandInput }) => {
+
+const SubBrandList: React.FC<SubBrandListProps> = ({ stateValue }) => {
 
     const {loading,error,data} = useQuery(GET_SUB_BRANDS,
         {
-            variables: {brandInput}
+            variables: {stateValue}
         });
 
     if (loading) {
         return <p>Loading...</p>;
-    }
+    };
 
     if (error) {
         return <p>Error: {error.message}</p>;
-    }
+    };
 
-    const subBrands = data?.getSubBrands ?? [];
+    console.log(data);
 
     return (
         <div>
             <h2>Sub Brands</h2>
             <ul>
-                {subBrands.map((brand: Brand) => (
+                {data.getSubBrands.map((brand:Brand) => (
                     <li key={brand.brandName}>{brand.brandName}</li>
                 ))}
             </ul>
@@ -44,5 +49,4 @@ const GetSubBrands: React.FC<{brandInput:String}>  = ({ brandInput }) => {
     );
 };
 
-
-export default GetSubBrands;
+export default SubBrandList;
