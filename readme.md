@@ -21,8 +21,11 @@ to do:
 * Expand webscraping to build a larger initial graph
 * Host via AWS managed services
 
+### Helpful documentation:
 
 
+* GraphQL codegen : https://the-guild.dev/graphql/codegen/docs/getting-started/installation
+* React and Spring Boot article: https://suaybsimsek58.medium.com/react-spring-boot-graphql-fullstack-microservice-application-on-kubernetes-eb227e1a748b
 ![](src/main/resources/static/git_images/graphql.png)
 
 ![](src/main/resources/static/git_images/neo4j.png)
