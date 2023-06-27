@@ -32,9 +32,10 @@ const GetSubBrands = () => {
         if (data) {
             const { getSubBrands: newSubBrands } = data;
             setSubBrands(newSubBrands); // Update the state variable with the fetched subBrands
-            console.log(data)
         }
     }, [data])
+
+    console.log(subBrands)
 
 
     return (
