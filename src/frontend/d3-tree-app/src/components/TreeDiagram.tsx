@@ -12,7 +12,6 @@ const TreeDiagram = () => {
 
     return (
         <div>
-            <TextButton />
             <GetSubBrands />
         </div>
     );

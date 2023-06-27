@@ -1,3 +1,4 @@
+import {useEffect, useState} from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 
 interface SubBrand {
@@ -18,31 +19,35 @@ const GET_SUB_BRANDS = gql`
 `;
 
 const GetSubBrands = () => {
+    const [brandName, setBrandName] = useState('');
+    const [subBrands, setSubBrands] = useState<SubBrand[]>([]); // State variable to store subBrands
     const [getSubBrands, { loading, data, error }] = useLazyQuery<QueryData>(GET_SUB_BRANDS);
 
-    const handleFetchSubBrands = (brandName: string) => {
+    const handleFetchSubBrands = () => {
         getSubBrands({ variables: { brandName } });
     };
 
-    if (loading) {
-        return <p>Loading...</p>;
-    }
 
-    if (error) {
-        return <p>Error: {error.message}</p>;
-    }
+    useEffect(() => {
+        if (data) {
+            const { getSubBrands: newSubBrands } = data;
+            setSubBrands(newSubBrands); // Update the state variable with the fetched subBrands
+            console.log(data)
+        }
+    }, [data])
 
-    if (data) {
-        const { getSubBrands: subBrands } = data;
-        console.log(subBrands); // Print subBrands array to the console
-        // Access and use the subBrands array as needed
-    }
 
     return (
         <div>
-            <button onClick={() => handleFetchSubBrands('exampleBrand')}>Fetch Sub Brands</button>
+            <input
+                type="text"
+                value={brandName}
+                onChange={(e) => setBrandName(e.target.value)}
+                placeholder="Enter brand name"
+            />
+            <button onClick={handleFetchSubBrands}>Fetch Sub Brands</button>
         </div>
     );
 };
 
-export default GetSubBrands;
+export default GetSubBrands
