@@ -1,15 +1,17 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import React from "react";
 
 
-interface Brand {
+interface SubBrand {
     brandName: string;
+    // Define other properties of SubBrand if applicable
 }
-
+interface QueryData {
+    getSubBrands: SubBrand[];
+}
 interface SubBrandListProps {
     stateValue: string;
 }
-
 const GET_SUB_BRANDS = gql`
     query GetSubBrands($brandName: String!) {
         getSubBrands(brandName: $brandName) {
@@ -18,14 +20,18 @@ const GET_SUB_BRANDS = gql`
     }
 `;
 
-
-
+/***
+ * Look for useLazy query not useQuery -> that helps you explicitly call it in the button.
+ * @param stateValue
+ * @constructor
+ */
 const SubBrandList: React.FC<SubBrandListProps> = ({ stateValue }) => {
 
-    const {loading,error,data} = useQuery(GET_SUB_BRANDS,
-        {
-            variables: {stateValue}
-        });
+    const [getSubBrands, { loading, data, error }] = useLazyQuery<QueryData>(GET_SUB_BRANDS);
+
+    const handleFetchSubBrands = (brandName: string) => {
+        getSubBrands({ variables: { brandName } });
+    };
 
     if (loading) {
         return <p>Loading...</p>;
@@ -35,18 +41,16 @@ const SubBrandList: React.FC<SubBrandListProps> = ({ stateValue }) => {
         return <p>Error: {error.message}</p>;
     };
 
-    console.log(data);
+    if (data) {
+        const { getSubBrands: subBrands } = data;
+        console.log(subBrands); // Print subBrands array to the console
+        // Access and use the subBrands array as needed
+    }
 
     return (
         <div>
-            <h2>Sub Brands</h2>
-            <ul>
-                {data.getSubBrands.map((brand:Brand) => (
-                    <li key={brand.brandName}>{brand.brandName}</li>
-                ))}
-            </ul>
+            <button onClick={() => handleFetchSubBrands('exampleBrand')}>Fetch Sub Brands</button>
         </div>
     );
 };
-
 export default SubBrandList;
