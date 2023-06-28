@@ -1,42 +1,28 @@
-import {useEffect, useState} from 'react';
-import { useLazyQuery, gql } from '@apollo/client';
+import {useEffect} from "react";
+
 
 interface SubBrand {
     brandName: string;
     // Define other properties of SubBrand if applicable
 }
 
-interface QueryData {
-    getSubBrands: SubBrand[];
+
+interface GetSubBrandsProps {
+    brandName: string;
+    setBrandName: React.Dispatch<React.SetStateAction<string>>;
+    subBrands: SubBrand[];
+    handleFetchSubBrands: () => void;
 }
 
-const GET_SUB_BRANDS = gql`
-    query GetSubBrands($brandName: String!) {
-        getSubBrands(brandName: $brandName) {
-            brandName
-        }
-    }
-`;
-
-const GetSubBrands = () => {
-    const [brandName, setBrandName] = useState('');
-    const [subBrands, setSubBrands] = useState<SubBrand[]>([]); // State variable to store subBrands
-    const [getSubBrands, { loading, data, error }] = useLazyQuery<QueryData>(GET_SUB_BRANDS);
-
-    const handleFetchSubBrands = () => {
-        getSubBrands({ variables: { brandName } });
-    };
-
-
+const GetSubBrands = ({
+                          brandName,
+                          setBrandName,
+                          subBrands,
+                          handleFetchSubBrands,
+                      }: GetSubBrandsProps) => {
     useEffect(() => {
-        if (data) {
-            const { getSubBrands: newSubBrands } = data;
-            setSubBrands(newSubBrands); // Update the state variable with the fetched subBrands
-        }
-    }, [data])
-
-    console.log(subBrands)
-
+        console.log(subBrands);
+    }, [subBrands]);
 
     return (
         <div>
@@ -51,4 +37,4 @@ const GetSubBrands = () => {
     );
 };
 
-export default GetSubBrands
+export default GetSubBrands;

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import TreeDiagram from "./components/TreeDiagram";
+import VisualizeSubBrandsChild from "./components/VisualizeSubBrandsChild";
+import SubBrandTreeParent from "./components/SubBrandTreeParent";
 
 
 
@@ -9,7 +10,7 @@ const App = () => {
 
     return (
         <div>
-            <TreeDiagram />
+            <SubBrandTreeParent />
         </div>
     );
 }
