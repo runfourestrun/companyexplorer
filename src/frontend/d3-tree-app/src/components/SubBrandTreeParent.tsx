@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 import GetSubBrands from './GetSubBrands';
 import VisualizeSubBrandsChild from "./VisualizeSubBrandsChild";
+import SunburstChart from "./SunburstChart";
 
 
 interface SubBrand {
@@ -45,8 +46,8 @@ const ParentComponent = () => {
                 setBrandName={setBrandName}
                 subBrands={subBrands}
                 handleFetchSubBrands={handleFetchSubBrands}/>
-            <VisualizeSubBrandsChild subBrands={subBrands}
-    />
+            <VisualizeSubBrandsChild subBrands={subBrands}/>
+            <SunburstChart subBrands={subBrands} brandName={brandName} />
     </div>
 );
 };
